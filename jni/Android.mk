@@ -27,7 +27,10 @@ LOCAL_C_INCLUDES := \
    $(LOCAL_PATH)/BulletPhysics \
 
 LOCAL_CFLAGS    := $(LOCAL_C_INCLUDES:%=-I%) -O3 -DANDROID_NDK -Wno-psabi
-LOCAL_LDLIBS    := -llog -lGLESv2 -ldl
+
+LOCAL_DEFAULT_CPP_EXTENSION := cpp
+
+LOCAL_LDLIBS    := -llog -lGLESv2 -ldl -landroid
 
 LOCAL_SRC_FILES := gl_code.cpp 
    

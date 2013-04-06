@@ -16,6 +16,8 @@
 
 package net.dykim1983.bulletphysicsndktest;
 
+import android.content.res.AssetManager;
+
 // Wrapper for native library
 
 public class BulletPhysicsLib {
@@ -23,6 +25,8 @@ public class BulletPhysicsLib {
      static {
          System.loadLibrary("bulletphysics");
      }
+     
+     public static native void initassets(AssetManager assetManager);
 
     /**
      * @param width the current view width
@@ -30,4 +34,6 @@ public class BulletPhysicsLib {
      */
      public static native void init(int width, int height);
      public static native void step();
+
+	 public static native void clean();
 }
