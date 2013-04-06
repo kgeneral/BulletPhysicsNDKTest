@@ -17,6 +17,7 @@
 LOCAL_PATH:= $(call my-dir)
 
 include jni/BulletPhysics/Android.mk
+include jni/Irrlicht/Android.mk
 
 include $(CLEAR_VARS)
 
@@ -34,6 +35,6 @@ LOCAL_LDLIBS    := -llog -lGLESv2 -ldl -landroid
 
 LOCAL_SRC_FILES := gl_code.cpp 
    
-LOCAL_STATIC_LIBRARIES := libbullet
+LOCAL_STATIC_LIBRARIES := libbullet libirrlicht
 
 include $(BUILD_SHARED_LIBRARY)
