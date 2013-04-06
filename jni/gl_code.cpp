@@ -23,9 +23,9 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <iostream>
+#include <fstream>
+#include <cmath>
 
 #include "BulletPhysics/btBulletDynamicsCommon.h"
 
@@ -270,7 +270,7 @@ bool setupGraphics(int w, int h) {
 
 
     	{
-
+/*
     		addBox(btVector3(2,10,0));
     		addBox(btVector3(2,15,0));
             addBox(btVector3(2,19,0));
@@ -281,7 +281,7 @@ bool setupGraphics(int w, int h) {
             addBox(btVector3(1,25,3));
             addBox(btVector3(1,27,1));
             addBox(btVector3(1,35,2));
-
+*/
     	}
 
 
@@ -408,11 +408,34 @@ void getCubeFromVertices(btCollisionObject* obj, GLfloat* vertexList) {
     }
 }
 
+clock_t pastms = clock();
+double generateInterval = 0.0f;
+double global_intervalms = 0;
+
 void renderFrame() {
 
 	dynamicsWorld->stepSimulation(1.f/60.f,10);
 
-    glClearColor(0.f, 0.f, 0.f, 0.0f);
+	//clock_t pastms = clock();
+	//print fps
+	clock_t curms = clock();
+	double intervalms = (double)(curms - pastms) / CLOCKS_PER_SEC;
+	//LOGI("fps = %f", 1 / intervalms);
+	pastms = curms;
+	global_intervalms = intervalms;
+
+	generateInterval += intervalms;
+	if(generateInterval > 0.3f) {
+		//NSLog(@"total : %lu, new box = %f %f",boxList.size(), x, 50.0f);
+		//[self addBox:btVector3(1,35,2)];
+		//numofboxes++;
+		float x = (arc4random() % 6) - 3;
+		addBox(btVector3(x,30,x+ 1));
+		generateInterval = 0.0f;
+		//NSLog(@"fps = %f", 1 / intervalms);
+	}
+
+    glClearColor(0.2f, 0.3f, 0.4f, 0.5f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(gProgram);
@@ -431,7 +454,7 @@ void renderFrame() {
         	body->getMotionState()->getWorldTransform(trans);
         	getCubeFromVertices(obj, gCubeVertexList);
 
-        	glVertexAttribPointer(gvPositionHandle, 3, GL_FLOAT, GL_FALSE, 0, gCubeVertexList);
+        	glVertexAttribPointer(gvPositionHandle, 3, GL_FLOAT, GL_FALSE, 24, gCubeVertexList);
         	glEnableVertexAttribArray(gvPositionHandle);
         	glDrawArrays(GL_TRIANGLES, 0, 36);
 
