@@ -195,6 +195,8 @@ GLuint createProgram(const char* pVertexSource, const char* pFragmentSource) {
 
 GLuint gProgram;
 GLuint gvPositionHandle;
+GLuint gvColorHandle;
+GLuint gvNormalHandle;
 
 bool setupGraphics(int w, int h) {
     printGLString("Version", GL_VERSION);
@@ -212,6 +214,16 @@ bool setupGraphics(int w, int h) {
     checkGlError("glGetAttribLocation");
     LOGI("glGetAttribLocation(\"vPosition\") = %d\n",
             gvPositionHandle);
+
+    gvColorHandle = glGetAttribLocation(gProgram, "vColor");
+        checkGlError("glGetAttribLocation");
+        LOGI("glGetAttribLocation(\"vColor\") = %d\n",
+        		gvColorHandle);
+
+	gvNormalHandle = glGetAttribLocation(gProgram, "vNormal");
+		checkGlError("glGetAttribLocation");
+		LOGI("glGetAttribLocation(\"vNormal\") = %d\n",
+				gvNormalHandle);
 
     glViewport(0, 0, w, h);
     checkGlError("glViewport");
@@ -456,6 +468,10 @@ void renderFrame() {
 
         	glVertexAttribPointer(gvPositionHandle, 3, GL_FLOAT, GL_FALSE, 24, gCubeVertexList);
         	glEnableVertexAttribArray(gvPositionHandle);
+
+        	glVertexAttribPointer(gvNormalHandle, 3, GL_FLOAT, GL_FALSE, 24, (gCubeVertexList + 12));
+        	glEnableVertexAttribArray(gvNormalHandle);
+
         	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
